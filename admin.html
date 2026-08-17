@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAIRYMOOD Admin Dashboard</title>
+    <link rel="stylesheet" href="tailwind.generated.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#f6f6f4] text-gray-900 min-h-screen selection:bg-black selection:text-white">
+    <div class="min-h-screen lg:grid lg:grid-cols-[250px_1fr]">
+        <aside class="hidden lg:flex bg-black text-white min-h-screen sticky top-0 h-screen flex-col p-5">
+            <a href="index.html" class="flex items-center gap-3 px-2 py-3 mb-7">
+                <div class="w-9 h-9 rounded-xl bg-white text-black flex items-center justify-center"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <div>
+                    <h1 class="font-serif-title text-xl tracking-[0.14em]">FAIRYMOOD</h1>
+                    <p class="text-[8px] uppercase tracking-[0.25em] text-gray-500">Admin Console</p>
+                </div>
+            </a>
+
+            <nav class="space-y-1" id="admin-nav">
+                <button data-section="overview" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-left bg-white text-black font-semibold">
+                    <i class="fa-solid fa-chart-pie w-4"></i> ภาพรวม
+                </button>
+                <button data-section="orders" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-left text-gray-400 hover:bg-white/10 hover:text-white transition">
+                    <i class="fa-solid fa-box w-4"></i> คำสั่งซื้อ
+                    <span id="nav-order-badge" class="ml-auto bg-white/10 px-2 py-0.5 rounded-full text-[9px]">0</span>
+                </button>
+                <button data-section="products" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-left text-gray-400 hover:bg-white/10 hover:text-white transition">
+                    <i class="fa-solid fa-shirt w-4"></i> สินค้า
+                </button>
+                <button data-section="customers" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-left text-gray-400 hover:bg-white/10 hover:text-white transition">
+                    <i class="fa-solid fa-users w-4"></i> ลูกค้า
+                </button>
+            </nav>
+
+            <div class="mt-auto space-y-2">
+                <a href="index.html" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-gray-400 hover:bg-white/10 hover:text-white transition">
+                    <i class="fa-solid fa-store w-4"></i> ดูหน้าร้าน
+                </a>
+                <button id="admin-refresh-btn" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-gray-400 hover:bg-white/10 hover:text-white transition">
+                    <i class="fa-solid fa-rotate w-4"></i> โหลดข้อมูลล่าสุด
+                </button>
+                <button onclick="logoutAdmin()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs text-red-300 hover:bg-red-500/10 transition">
+                    <i class="fa-solid fa-right-from-bracket w-4"></i> ออกจากระบบ
+                </button>
+            </div>
+        </aside>
+
+        <main class="min-w-0">
+            <header class="bg-white/90 backdrop-blur sticky top-0 z-30 border-b border-gray-200 px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 rounded-xl border border-gray-200"><i class="fa-solid fa-bars"></i></button>
+                    <div>
+                        <p id="page-kicker" class="text-[9px] uppercase tracking-[0.2em] text-gray-400 font-bold">Dashboard</p>
+                        <h2 id="page-title" class="font-serif-title text-xl">ภาพรวมร้านค้า</h2>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="hidden sm:inline-flex text-[10px] font-semibold px-3 py-2 rounded-full bg-gray-100 hover:bg-black hover:text-white transition"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>หน้าร้าน</a>
+                    <div class="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold">A</div>
+                    <div class="hidden md:block leading-tight">
+                        <p class="text-[10px] font-semibold">Administrator</p>
+                        <p id="admin-email" class="text-[9px] text-gray-400">admin@fairymood.com</p>
+                    </div>
+                </div>
+            </header>
+
+            <div id="mobile-menu" class="hidden lg:hidden fixed inset-0 z-40 bg-black/50">
+                <div class="bg-black text-white w-72 h-full p-5 flex flex-col">
+                    <div class="flex justify-between items-center mb-7">
+                        <span class="font-serif-title tracking-[0.12em]">FAIRYMOOD</span>
+                        <button id="mobile-menu-close" class="w-9 h-9"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="space-y-1">
+                        <button data-section="overview" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs bg-white text-black">ภาพรวม</button>
+                        <button data-section="orders" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs text-gray-300">คำสั่งซื้อ</button>
+                        <button data-section="products" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs text-gray-300">สินค้า</button>
+                        <button data-section="customers" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs text-gray-300">ลูกค้า</button>
+                    </div>
+                    <button onclick="logoutAdmin()" class="mt-auto px-4 py-3 rounded-xl text-xs text-left text-red-300"><i class="fa-solid fa-right-from-bracket mr-2"></i>ออกจากระบบ</button>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-6 lg:p-8 max-w-[1500px] mx-auto">
+                <!-- OVERVIEW -->
+                <section id="section-overview" class="admin-section space-y-6 animate-fade-in">
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5">
+                        <article class="bg-black text-white rounded-3xl p-5 sm:p-6 shadow-sm">
+                            <div class="flex justify-between items-start"><span class="text-[10px] uppercase tracking-wider text-gray-400">ยอดขายรวม</span><i class="fa-solid fa-sack-dollar text-gray-500"></i></div>
+                            <h3 id="stat-sales" class="text-2xl sm:text-3xl font-bold mt-4 font-serif-title">฿0</h3>
+                            <p class="text-[9px] text-gray-500 mt-2">ไม่รวมออเดอร์ที่ยกเลิก</p>
+                        </article>
+                        <article class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200 shadow-sm">
+                            <div class="flex justify-between items-start"><span class="text-[10px] uppercase tracking-wider text-gray-400">คำสั่งซื้อ</span><i class="fa-solid fa-box-open text-gray-300"></i></div>
+                            <h3 id="stat-orders" class="text-2xl sm:text-3xl font-bold mt-4 font-serif-title">0</h3>
+                            <p id="stat-pending" class="text-[9px] text-amber-600 mt-2">0 รายการรอดำเนินการ</p>
+                        </article>
+                        <article class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200 shadow-sm">
+                            <div class="flex justify-between items-start"><span class="text-[10px] uppercase tracking-wider text-gray-400">สินค้า</span><i class="fa-solid fa-shirt text-gray-300"></i></div>
+                            <h3 id="stat-products" class="text-2xl sm:text-3xl font-bold mt-4 font-serif-title">0</h3>
+                            <p id="stat-low-stock" class="text-[9px] text-red-500 mt-2">0 รายการสต็อกต่ำ</p>
+                        </article>
+                        <article class="bg-white rounded-3xl p-5 sm:p-6 border border-gray-200 shadow-sm">
+                            <div class="flex justify-between items-start"><span class="text-[10px] uppercase tracking-wider text-gray-400">ลูกค้า</span><i class="fa-solid fa-users text-gray-300"></i></div>
+                            <h3 id="stat-customers" class="text-2xl sm:text-3xl font-bold mt-4 font-serif-title">0</h3>
+                            <p class="text-[9px] text-gray-400 mt-2">นับจากเบอร์โทรไม่ซ้ำ</p>
+                        </article>
+                    </div>
+
+                    <div class="grid xl:grid-cols-3 gap-6">
+                        <div class="xl:col-span-2 bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+                            <div class="p-5 sm:p-6 flex items-center justify-between border-b border-gray-100">
+                                <div><p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Latest Orders</p><h3 class="font-semibold text-sm mt-1">คำสั่งซื้อล่าสุด</h3></div>
+                                <button data-go="orders" class="text-[10px] font-semibold hover:underline">ดูทั้งหมด <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                            </div>
+                            <div class="overflow-x-auto"><table class="w-full text-xs"><tbody id="overview-orders"></tbody></table></div>
+                        </div>
+                        <div class="bg-white rounded-3xl border border-gray-200 shadow-sm p-5 sm:p-6">
+                            <div class="flex items-center justify-between mb-5"><div><p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Inventory</p><h3 class="font-semibold text-sm mt-1">สินค้าสต็อกต่ำ</h3></div><i class="fa-solid fa-triangle-exclamation text-amber-400"></i></div>
+                            <div id="low-stock-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ORDERS -->
+                <section id="section-orders" class="admin-section hidden space-y-5 animate-fade-in">
+                    <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="p-5 sm:p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div><p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Order Management</p><h3 class="text-lg font-semibold mt-1">จัดการคำสั่งซื้อ</h3></div>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <div class="relative"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i><input id="order-search" type="search" placeholder="Order ID / ลูกค้า / เบอร์โทร" class="w-full sm:w-64 bg-gray-50 border border-gray-200 rounded-full pl-9 pr-4 py-2.5 text-xs outline-none focus:border-black"></div>
+                                <select id="order-status-filter" class="bg-gray-50 border border-gray-200 rounded-full px-4 py-2.5 text-xs outline-none">
+                                    <option value="all">ทุกสถานะ</option><option value="awaiting_payment">รอชำระเงิน</option><option value="pending">รอตรวจสอบ</option><option value="packing">กำลังแพ็ค</option><option value="shipped">จัดส่งแล้ว</option><option value="completed">สำเร็จ</option><option value="cancelled">ยกเลิก</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[850px] text-xs">
+                                <thead class="bg-gray-50 text-gray-400 uppercase tracking-wider text-[9px]"><tr><th class="text-left px-5 py-3">Order</th><th class="text-left px-5 py-3">ลูกค้า</th><th class="text-left px-5 py-3">ยอดรวม</th><th class="text-left px-5 py-3">ชำระเงิน</th><th class="text-left px-5 py-3">สถานะ</th><th class="text-left px-5 py-3">Tracking</th><th class="text-right px-5 py-3">จัดการ</th></tr></thead>
+                                <tbody id="orders-table" class="divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PRODUCTS -->
+                <section id="section-products" class="admin-section hidden space-y-5 animate-fade-in">
+                    <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="p-5 sm:p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div><p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Product Management</p><h3 class="text-lg font-semibold mt-1">จัดการสินค้า</h3></div>
+                            <div class="flex gap-2"><div class="relative"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i><input id="product-search" type="search" placeholder="ค้นหาสินค้า" class="w-full sm:w-56 bg-gray-50 border border-gray-200 rounded-full pl-9 pr-4 py-2.5 text-xs outline-none focus:border-black"></div><button onclick="openProductEditor()" class="bg-black text-white px-4 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap"><i class="fa-solid fa-plus mr-2"></i>เพิ่มสินค้า</button></div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[800px] text-xs">
+                                <thead class="bg-gray-50 text-gray-400 uppercase tracking-wider text-[9px]"><tr><th class="text-left px-5 py-3">สินค้า</th><th class="text-left px-5 py-3">หมวดหมู่</th><th class="text-left px-5 py-3">ราคา</th><th class="text-left px-5 py-3">สต็อก</th><th class="text-left px-5 py-3">สถานะ</th><th class="text-right px-5 py-3">จัดการ</th></tr></thead>
+                                <tbody id="products-table" class="divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CUSTOMERS -->
+                <section id="section-customers" class="admin-section hidden space-y-5 animate-fade-in">
+                    <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="p-5 sm:p-6 border-b border-gray-100"><p class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Customer Data</p><h3 class="text-lg font-semibold mt-1">ข้อมูลลูกค้า</h3><p class="text-[10px] text-gray-400 mt-1">ข้อมูลจากฐานข้อมูลจริง · การลบข้อมูลส่วนตัวจะทำให้ออเดอร์เก่าเป็นข้อมูลไม่ระบุตัวตน แต่ยังเก็บยอดขายและรายการสินค้าไว้</p></div>
+                        <div class="overflow-x-auto"><table class="w-full min-w-[700px] text-xs"><thead class="bg-gray-50 text-gray-400 uppercase tracking-wider text-[9px]"><tr><th class="text-left px-5 py-3">ลูกค้า</th><th class="text-left px-5 py-3">เบอร์โทร</th><th class="text-left px-5 py-3">จำนวนออเดอร์</th><th class="text-left px-5 py-3">ยอดซื้อรวม</th><th class="text-left px-5 py-3">ที่อยู่ล่าสุด</th><th class="text-right px-5 py-3">จัดการ</th></tr></thead><tbody id="customers-table" class="divide-y divide-gray-100"></tbody></table></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- PRODUCT EDITOR -->
+    <div id="product-editor-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="min-h-full flex items-center justify-center py-6"><div class="bg-white rounded-3xl w-full max-w-xl p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeProductEditor()" class="absolute top-5 right-5 text-gray-400 hover:text-black"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <p class="text-[9px] uppercase tracking-[0.2em] text-gray-400 font-bold">Product Editor</p><h3 id="product-editor-title" class="font-serif-title text-2xl mt-1 mb-6">เพิ่มสินค้าใหม่</h3>
+            <form id="product-editor-form" class="space-y-4">
+                <input type="hidden" id="edit-product-id">
+                <div><label class="text-[10px] font-semibold text-gray-500 block mb-1">ชื่อสินค้า *</label><input id="edit-product-name" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-black"></div>
+                <div class="grid grid-cols-2 gap-3"><div><label class="text-[10px] font-semibold text-gray-500 block mb-1">ราคา (บาท) *</label><input id="edit-product-price" type="number" min="0" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-black"></div><div><label class="text-[10px] font-semibold text-gray-500 block mb-1">จำนวนสต็อก *</label><input id="edit-product-stock" type="number" min="0" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-black"></div></div>
+                <div><label class="text-[10px] font-semibold text-gray-500 block mb-1">หมวดหมู่ *</label><select id="edit-product-category" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs"><option value="camisole">เสื้อสายเดี่ยว / ถัก</option><option value="outer">เสื้อคลุม / ซีทรู</option><option value="bottoms">กระโปรง / กางเกง</option><option value="accessories">เครื่องประดับ</option></select></div>
+                <div class="grid sm:grid-cols-[120px_1fr] gap-3 items-start">
+                    <img id="edit-product-preview" alt="ตัวอย่างรูปสินค้า" class="hidden w-full h-32 object-cover rounded-2xl bg-gray-100 border border-gray-200">
+                    <div class="space-y-3">
+                        <div><label class="text-[10px] font-semibold text-gray-500 block mb-1">อัปโหลดรูปสินค้า (JPG/PNG/WebP ไม่เกิน 5MB)</label><input id="edit-product-file" type="file" accept="image/jpeg,image/png,image/webp" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs bg-gray-50"></div>
+                        <div><label class="text-[10px] font-semibold text-gray-500 block mb-1">หรือ URL รูปภาพ</label><input id="edit-product-image" type="url" placeholder="https://..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-black"></div>
+                    </div>
+                </div>
+                <div><label class="text-[10px] font-semibold text-gray-500 block mb-1">รายละเอียดสินค้า *</label><textarea id="edit-product-description" rows="3" required class="w-full border border-gray-200 rounded-xl px-4 py-3 text-xs outline-none focus:border-black"></textarea></div>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100"><label class="flex items-center gap-2 text-xs"><input id="edit-product-active" type="checkbox" checked class="accent-black"> แสดงบนหน้าร้าน</label><button type="submit" class="bg-black text-white px-6 py-3 rounded-full text-xs font-semibold">บันทึกสินค้า</button></div>
+            </form>
+        </div></div>
+    </div>
+
+    <!-- ORDER EDITOR -->
+    <div id="order-editor-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="min-h-full flex items-center justify-center py-6"><div class="bg-white rounded-3xl w-full max-w-2xl p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeOrderEditor()" class="absolute top-5 right-5 text-gray-400 hover:text-black"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <p class="text-[9px] uppercase tracking-[0.2em] text-gray-400 font-bold">Order Management</p><h3 id="order-editor-title" class="font-serif-title text-2xl mt-1">Order</h3>
+            <div id="order-editor-body" class="mt-6"></div>
+        </div></div>
+    </div>
+
+    <div id="admin-toast" class="fixed bottom-6 right-6 z-[60] bg-black text-white text-xs px-5 py-3 rounded-full shadow-2xl translate-y-20 opacity-0 transition-all duration-300"><i class="fa-solid fa-check text-green-400 mr-2"></i><span id="admin-toast-message">บันทึกแล้ว</span></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
+    <script src="data-store.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

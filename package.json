@@ -1,0 +1,20 @@
+{
+  "name": "fairymood-store-production",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "tailwindcss -i ./tailwind-input.css -o ./tailwind.generated.css --minify"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.111.0",
+    "stripe": "22.3.2"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/cli": "4.3.3"
+  }
+}

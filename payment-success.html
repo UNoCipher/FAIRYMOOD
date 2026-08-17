@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ชำระเงินสำเร็จ - FAIRYMOOD</title>
+  <link rel="stylesheet" href="tailwind.generated.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#f6f6f4] min-h-screen text-gray-900">
+  <main class="min-h-screen flex items-center justify-center p-5">
+    <section class="w-full max-w-lg bg-white rounded-3xl border border-gray-200 shadow-xl p-7 sm:p-10 text-center animate-fade-in">
+      <a href="index.html" class="font-serif-title tracking-[0.15em] text-2xl">FAIRYMOOD</a>
+      <div id="status-icon" class="w-16 h-16 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center text-2xl mx-auto mt-8">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+      </div>
+      <h1 id="status-title" class="font-serif-title text-3xl mt-5">กำลังตรวจสอบการชำระเงิน</h1>
+      <p id="status-message" class="text-xs text-gray-500 mt-2 leading-relaxed">ระบบกำลังตรวจสอบข้อมูลกับผู้ให้บริการชำระเงิน</p>
+
+      <div id="order-card" class="hidden mt-7 bg-gray-50 rounded-2xl border border-gray-100 p-5 text-left text-xs space-y-3">
+        <div class="flex justify-between gap-4 border-b border-gray-200 pb-3"><span class="text-gray-400">Order ID</span><strong id="success-order-no" class="font-mono text-right"></strong></div>
+        <div class="flex justify-between gap-4"><span class="text-gray-400">ผู้รับ</span><span id="success-name" class="font-medium text-right"></span></div>
+        <div class="flex justify-between gap-4"><span class="text-gray-400">ยอดชำระ</span><strong id="success-total"></strong></div>
+        <div class="flex justify-between gap-4"><span class="text-gray-400">สถานะ</span><strong id="success-payment" class="text-green-600"></strong></div>
+      </div>
+
+      <div class="mt-7 grid gap-2">
+        <button id="copy-order-btn" class="hidden w-full bg-gray-100 hover:bg-gray-200 rounded-full py-3 text-xs font-semibold"><i class="fa-regular fa-copy mr-2"></i>คัดลอก Order ID</button>
+        <a href="index.html#track" class="w-full bg-black text-white rounded-full py-3 text-xs font-semibold">กลับหน้าร้าน / ติดตามออเดอร์</a>
+      </div>
+    </section>
+  </main>
+  <script src="payment-success.js"></script>
+</body>
+</html>

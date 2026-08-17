@@ -1,0 +1,11 @@
+@import "tailwindcss" source(none);
+@source "./index.html";
+@source "./login.html";
+@source "./admin.html";
+@source "./payment-success.html";
+@source "./privacy.html";
+@source "./terms.html";
+@source "./script.js";
+@source "./admin.js";
+@source "./login.js";
+@source "./payment-success.js";

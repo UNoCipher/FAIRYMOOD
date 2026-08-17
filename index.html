@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAIRYMOOD - ร้านค้าแฟชั่น Fairycore & Mix & Match ครบวงจร</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="tailwind.generated.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Prompt & Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white text-gray-900 flex flex-col min-h-screen selection:bg-black selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div id="top-announcement" class="bg-black text-white text-xs py-2 px-4 text-center tracking-widest font-light flex items-center justify-center space-x-2">
+        <span>✨ ฉลองเปิดร้านใหม่! <strong class="font-semibold underline">ส่งฟรีทุกออเดอร์</strong> ไม่มีขั้นต่ำ | กรอกโค้ด <span class="bg-white text-black px-1.5 py-0.5 rounded font-bold">FAIRY10</span> ลดทันที 10% ✨</span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="sm:hidden p-2 text-gray-700 hover:text-black focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 cursor-pointer flex flex-col items-center sm:items-start" onclick="switchTab('shop')">
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-widest text-black uppercase font-serif-title">FAIRYMOOD</h1>
+                    <p class="text-[9px] text-gray-400 -mt-1 tracking-[0.2em] uppercase">Fairycore & Layering Studio</p>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden sm:flex space-x-8 text-xs uppercase tracking-widest font-medium">
+                    <button onclick="switchTab('shop')" id="nav-btn-shop" class="nav-link text-black border-b-2 border-black pb-1 transition">สินค้าทั้งหมด</button>
+                    <button onclick="switchTab('match')" id="nav-btn-match" class="nav-link text-gray-500 hover:text-black transition">✨ มิกซ์แอนด์แมทช์ลุค</button>
+                    <button onclick="switchTab('track')" id="nav-btn-track" class="nav-link text-gray-500 hover:text-black transition">📦 ติดตามพัสดุ</button>
+                    <button onclick="switchTab('reviews')" id="nav-btn-reviews" class="nav-link text-gray-500 hover:text-black transition">รีวิวจากลูกค้า</button>
+                    <button onclick="switchTab('about')" id="nav-btn-about" class="nav-link text-gray-500 hover:text-black transition">เกี่ยวกับเรา</button>
+                </div>
+
+                <!-- Icons Right Action -->
+                <div class="flex items-center space-x-4">
+                    <!-- Toggle Admin Mode Button -->
+                    <button onclick="goToAdminLogin()" title="ระบบหลังบ้าน (Admin)" class="text-xs bg-gray-100 hover:bg-black hover:text-white px-3 py-1.5 rounded-full text-gray-700 transition flex items-center space-x-1">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span class="hidden md:inline">หลังบ้าน</span>
+                    </button>
+
+                    <button onclick="toggleSearchModal()" class="text-gray-700 hover:text-black transition p-1" title="ค้นหา">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </button>
+                    
+                    <button onclick="toggleCartModal()" class="text-gray-700 hover:text-black transition relative p-1" title="ตะกร้าสินค้า">
+                        <i class="fa-solid fa-bag-shopping text-xl"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div id="mobile-menu" class="hidden sm:hidden border-t border-gray-100 bg-white px-6 pt-3 pb-6 space-y-3 text-sm shadow-lg">
+            <button onclick="switchTab('shop'); toggleMobileMenu();" class="block w-full text-left py-2 border-b border-gray-50 text-gray-800 font-medium">🛍️ สินค้าทั้งหมด</button>
+            <button onclick="switchTab('match'); toggleMobileMenu();" class="block w-full text-left py-2 border-b border-gray-50 text-gray-800 font-medium">✨ ห้องลองชุด Mix & Match</button>
+            <button onclick="switchTab('track'); toggleMobileMenu();" class="block w-full text-left py-2 border-b border-gray-50 text-gray-800 font-medium">📦 ติดตามพัสดุ / สถานะคำสั่งซื้อ</button>
+            <button onclick="switchTab('reviews'); toggleMobileMenu();" class="block w-full text-left py-2 border-b border-gray-50 text-gray-800 font-medium">⭐ รีวิวจากลูกค้า</button>
+            <button onclick="switchTab('about'); toggleMobileMenu();" class="block w-full text-left py-2 border-b border-gray-50 text-gray-800 font-medium">🌿 เกี่ยวกับเรา</button>
+            <button onclick="goToAdminLogin();" class="block w-full text-left py-2 text-black font-semibold bg-gray-100 rounded-lg px-3 mt-2">🔐 เข้าสู่ระบบหลังบ้าน (Admin)</button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow">
+
+        <!-- TAB 1: SHOP (สินค้าทั้งหมด) -->
+        <section id="tab-shop" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+            <!-- Hero Banner -->
+            <div class="relative bg-gray-900 text-white rounded-3xl overflow-hidden mb-10 shadow-2xl">
+                <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=80');"></div>
+                <div class="relative z-10 px-6 py-16 sm:px-12 sm:py-24 max-w-2xl">
+                    <span class="inline-block px-3 py-1 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full mb-4">FAIRYCORE COLLECTION 2026</span>
+                    <h2 class="text-3xl sm:text-5xl font-extralight tracking-wide leading-tight mb-4 font-serif-title">Fairy Grunge & Layering Essentials</h2>
+                    <p class="text-gray-300 text-xs sm:text-sm font-light mb-8 leading-relaxed">
+                        เสื้อสายเดี่ยว สร้อยคอ และเสื้อคลุมซีทรูที่ถูกออกแบบมาเพื่อให้แมทช์ได้เกิน 10 ลุค เรียบเท่ สายเดี่ยวใส่สบาย โทนสีคลาสสิก ดำ ขาว เทา เบจ
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('match')" class="bg-white text-black px-6 py-3 rounded-full text-xs font-semibold hover:bg-gray-200 transition shadow-lg flex items-center">
+                            ลองมิกซ์แอนด์แมทช์ลุคเลย <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                        </button>
+                        <button onclick="openSizeGuideModal()" class="border border-white/60 text-white px-5 py-3 rounded-full text-xs hover:bg-white/10 transition">
+                            <i class="fa-solid fa-ruler-horizontal mr-1.5"></i> ดูตารางไซส์
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories & Controls Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8 border-b border-gray-100 pb-4">
+                <div class="flex space-x-2 overflow-x-auto pb-2 sm:pb-0 w-full lg:w-auto" id="category-filters">
+                    <button onclick="filterCategory('all', event)" class="cat-btn bg-black text-white px-4 py-2 rounded-full text-xs font-medium tracking-wider whitespace-nowrap shadow-sm">ทั้งหมด</button>
+                    <button onclick="filterCategory('camisole', event)" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full text-xs font-medium tracking-wider whitespace-nowrap">เสื้อสายเดี่ยว / ถัก</button>
+                    <button onclick="filterCategory('outer', event)" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full text-xs font-medium tracking-wider whitespace-nowrap">เสื้อคลุม / ซีทรู</button>
+                    <button onclick="filterCategory('bottoms', event)" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full text-xs font-medium tracking-wider whitespace-nowrap">กระโปรง / กางเกง</button>
+                    <button onclick="filterCategory('accessories', event)" class="cat-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full text-xs font-medium tracking-wider whitespace-nowrap">เครื่องประดับ</button>
+                </div>
+                
+                <div class="flex items-center justify-between w-full lg:w-auto space-x-4">
+                    <div class="flex items-center space-x-2 text-xs text-gray-500">
+                        <span>เรียงตาม:</span>
+                        <select id="sort-select" onchange="handleSort()" class="bg-gray-50 border border-gray-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-black">
+                            <option value="default">แนะนำ</option>
+                            <option value="price-asc">ราคา: ต่ำสุด - สูงสุด</option>
+                            <option value="price-desc">ราคา: สูงสุด - ต่ำสุด</option>
+                            <option value="name">ชื่อสินค้า</option>
+                        </select>
+                    </div>
+                    <span class="text-xs text-gray-400 font-light" id="product-count">กำลังโหลดสินค้า...</span>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8" id="product-grid">
+                <!-- Dynamic Product Cards Rendered via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 2: MIX & MATCH STUDIO -->
+        <section id="tab-match" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-1">FITTING ROOM STUDIO</span>
+                <h2 class="text-2xl sm:text-4xl font-light tracking-wide uppercase font-serif-title">Fairy Mix & Match</h2>
+                <p class="text-gray-500 text-xs sm:text-sm mt-2 font-light">
+                    จัดเซ็ตเสื้อสายเดี่ยว แมทช์คู่กระโปรงและเสื้อคลุมเพื่อดูสไตล์ของคุณก่อนกดสั่งซื้อทั้งเซ็ต
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Match Preview Area (Canvas Panel) -->
+                <div class="lg:col-span-5 bg-gradient-to-b from-gray-50 to-gray-100 border border-gray-200 rounded-3xl p-6 flex flex-col items-center justify-center sticky top-24 shadow-sm">
+                    <div class="flex items-center justify-between w-full mb-4">
+                        <span class="text-[10px] uppercase tracking-widest text-gray-500 font-bold bg-white px-2.5 py-1 rounded-full border border-gray-200">
+                            ✨ ลุคพรีวิวที่คุณจัดไว้
+                        </span>
+                        <button onclick="resetMatchSelection()" class="text-xs text-gray-400 hover:text-red-500 transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> รีเซ็ต
+                        </button>
+                    </div>
+
+                    <!-- Visual Combo Stacking Preview -->
+                    <div class="w-full max-w-xs space-y-3 flex flex-col items-center">
+                        <!-- Top Outfit Card -->
+                        <div id="match-card-top" class="w-full bg-white border border-gray-200 rounded-2xl p-3 flex items-center space-x-3 shadow-sm hover:border-black transition">
+                            <img id="match-top-img" src="" class="w-16 h-16 object-cover rounded-xl bg-gray-100">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest block font-bold">1. ท่อนบน (Top)</span>
+                                <h4 id="match-top-title" class="text-xs font-medium text-gray-900 truncate">-</h4>
+                                <p id="match-top-price" class="text-xs font-bold text-black mt-0.5">฿0</p>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Outfit Card -->
+                        <div id="match-card-bottom" class="w-full bg-white border border-gray-200 rounded-2xl p-3 flex items-center space-x-3 shadow-sm hover:border-black transition">
+                            <img id="match-bottom-img" src="" class="w-16 h-16 object-cover rounded-xl bg-gray-100">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest block font-bold">2. ท่อนล่าง (Bottom)</span>
+                                <h4 id="match-bottom-title" class="text-xs font-medium text-gray-900 truncate">-</h4>
+                                <p id="match-bottom-price" class="text-xs font-bold text-black mt-0.5">฿0</p>
+                            </div>
+                        </div>
+
+                        <!-- Accessory Card -->
+                        <div id="match-card-acc" class="w-full bg-white border border-gray-200 rounded-2xl p-3 flex items-center space-x-3 shadow-sm hover:border-black transition">
+                            <img id="match-acc-img" src="" class="w-16 h-16 object-cover rounded-xl bg-gray-100">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-[9px] text-gray-400 uppercase tracking-widest block font-bold">3. คลุม/เครื่องประดับ (Layer)</span>
+                                <h4 id="match-acc-title" class="text-xs font-medium text-gray-900 truncate">-</h4>
+                                <p id="match-acc-price" class="text-xs font-bold text-black mt-0.5">฿0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total & Add Outfit Button -->
+                    <div class="w-full max-w-xs mt-6 pt-4 border-t border-gray-200 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-400 block uppercase font-medium">ราคารวมทั้งเซ็ต</span>
+                            <span id="match-total-price" class="text-xl font-bold text-black">฿0</span>
+                        </div>
+                        <button onclick="addMatchSetToCart()" class="bg-black text-white text-xs px-5 py-3 rounded-full hover:bg-gray-800 transition font-medium shadow-lg flex items-center">
+                            <span>ใส่ลงตะกร้าทั้งเซ็ต</span>
+                            <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Selector List Grid -->
+                <div class="lg:col-span-7 space-y-8">
+                    <!-- Step 1: Tops -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center text-gray-800">
+                            <span class="w-2 h-2 bg-black rounded-full mr-2"></span> 1. เลือกเสื้อสายเดี่ยว / ท่อนบน
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="match-selector-tops"></div>
+                    </div>
+
+                    <!-- Step 2: Bottoms -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center text-gray-800">
+                            <span class="w-2 h-2 bg-black rounded-full mr-2"></span> 2. เลือกกระโปรง / ท่อนล่าง
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="match-selector-bottoms"></div>
+                    </div>
+
+                    <!-- Step 3: Accessories & Outer -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider mb-3 flex items-center text-gray-800">
+                            <span class="w-2 h-2 bg-black rounded-full mr-2"></span> 3. เลือกเสื้อคลุม / เครื่องประดับ
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="match-selector-accs"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: ORDER TRACKING -->
+        <section id="tab-track" class="hidden max-w-3xl mx-auto px-4 py-12 animate-fade-in">
+            <div class="text-center mb-8">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-1">REAL-TIME STATUS</span>
+                <h2 class="text-2xl sm:text-3xl font-light uppercase tracking-wide font-serif-title">ติดตามพัสดุและคำสั่งซื้อ</h2>
+                <p class="text-xs text-gray-500 mt-2">เพื่อความปลอดภัย กรุณากรอกทั้ง Order ID และเบอร์โทรศัพท์ที่ใช้สั่งซื้อ</p>
+            </div>
+
+            <div class="bg-gray-50 p-6 sm:p-8 rounded-3xl border border-gray-200 shadow-sm mb-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                    <input type="text" id="track-order-input" autocomplete="off" placeholder="Order ID เช่น FM-20260817..." class="bg-white border border-gray-300 rounded-full px-5 py-3 text-sm focus:outline-none focus:border-black">
+                    <input type="tel" id="track-phone-input" autocomplete="tel" placeholder="เบอร์โทรที่ใช้สั่งซื้อ" class="bg-white border border-gray-300 rounded-full px-5 py-3 text-sm focus:outline-none focus:border-black">
+                </div>
+                <button onclick="searchOrderTrack()" class="w-full bg-black text-white px-8 py-3 rounded-full text-xs uppercase tracking-wider font-semibold hover:bg-gray-800 transition">
+                    ตรวจสอบสถานะคำสั่งซื้อ
+                </button>
+            </div>
+
+            <!-- Order Track Result Box -->
+            <div id="track-result-container" class="hidden bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-md">
+                <!-- Javascript will inject order timeline here -->
+            </div>
+        </section>
+
+        <!-- TAB 4: CUSTOMER REVIEWS -->
+        <section id="tab-reviews" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400 block mb-1">FAIRYMOOD COMMUNITY</span>
+                <h2 class="text-2xl sm:text-3xl font-light uppercase tracking-wide font-serif-title">รีวิวจากลูกค้าของเรา</h2>
+                <p class="text-xs text-gray-500 mt-2">ความรู้สึกของเพื่อนๆ ที่ได้ลองแมทช์ลุคเสื้อสายเดี่ยวกับ FAIRYMOOD</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-yellow-400 text-xs mb-3">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-gray-700 leading-relaxed italic mb-4">
+                            "เสื้อสายเดี่ยวลูกไม้ผ้านุ่มมาก ไม่คันเลย ใส่คู่กับกระโปรงระบายแล้วได้ลุคแฟรี่กรันจ์ตรงปกมาก ส่งเร็วประทับใจค่ะ!"
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-gray-200/60">
+                        <div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-xs">M</div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-gray-900">คุณมินตรา (Mintra K.)</h4>
+                            <span class="text-[10px] text-gray-400">สั่งซื้อสินค้าเมื่อ 2 วันที่แล้ว</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-yellow-400 text-xs mb-3">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-gray-700 leading-relaxed italic mb-4">
+                            "ชอบระบบลองแมทช์ลุคในเว็บมากเลย ทำให้มองภาพออกว่าซื้อไปแล้วใส่เข้ากันไหม กดสั่งยกเซ็ตได้รับส่งฟรีด้วยคุ้มมากค่ะ"
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-gray-200/60">
+                        <div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-xs">P</div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-gray-900">คุณแพรวา (Praewa P.)</h4>
+                            <span class="text-[10px] text-gray-400">สั่งซื้อสินค้าเมื่อสัปดาห์ที่แล้ว</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-yellow-400 text-xs mb-3">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-xs text-gray-700 leading-relaxed italic mb-4">
+                            "เสื้อคลุมซีทรูเบาพริ้วใส่สบายสุดๆ โทนสีขาวดำคลาสสิกเอาไปแมทช์กับเสื้อสายเดี่ยวที่มีอยู่เดิมได้เยอะมาก"
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4 border-t border-gray-200/60">
+                        <div class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-xs">A</div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-gray-900">คุณอริสา (Arisa T.)</h4>
+                            <span class="text-[10px] text-gray-400">สั่งซื้อสินค้าเมื่อ 3 วันที่แล้ว</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ABOUT US -->
+        <section id="tab-about" class="hidden max-w-4xl mx-auto px-4 py-16 text-center animate-fade-in">
+            <h2 class="text-3xl font-light tracking-wide uppercase mb-4 font-serif-title">เกี่ยวกับ FAIRYMOOD</h2>
+            <p class="text-gray-600 leading-relaxed font-light text-sm max-w-2xl mx-auto mb-10">
+                เราคือแบรนด์เสื้อผ้าสไตล์ Fairycore & Fairy Grunge ที่เน้นความเรียบง่ายแต่ง่ายต่อการจับคู่ (Easy to Match)
+                ดีไซน์เน้นเสื้อสายเดี่ยว งานลูกไม้ งานถัก และเนื้อผ้าพริ้วไหวในโทนสี ดำ ขาว เทา เบจ เพื่อให้ทุกคนสนุกกับการแมทช์ลุคที่เป็นตัวเอง
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+                <div class="p-6 border border-gray-200 rounded-2xl bg-gray-50 text-center">
+                    <i class="fa-solid fa-truck-fast text-2xl mb-3 text-black"></i>
+                    <h4 class="font-medium text-xs uppercase tracking-wider mb-1">ส่งฟรีไม่มีขั้นต่ำ</h4>
+                    <p class="text-[11px] text-gray-500">จัดส่งฟรีทุกออเดอร์ทั่วประเทศ โดยพัสดุด่วนพิเศษ</p>
+                </div>
+                <div class="p-6 border border-gray-200 rounded-2xl bg-gray-50 text-center">
+                    <i class="fa-solid fa-wand-magic-sparkles text-2xl mb-3 text-black"></i>
+                    <h4 class="font-medium text-xs uppercase tracking-wider mb-1">มิกซ์แมทช์หลากสไตล์</h4>
+                    <p class="text-[11px] text-gray-500">เสื้อสายเดี่ยว 1 ตัวสามารถแมทช์ได้มากกว่า 10 ลุค</p>
+                </div>
+                <div class="p-6 border border-gray-200 rounded-2xl bg-gray-50 text-center">
+                    <i class="fa-solid fa-shield-cat text-2xl mb-3 text-black"></i>
+                    <h4 class="font-medium text-xs uppercase tracking-wider mb-1">คัดสรรผ้านุ่มใส่สบาย</h4>
+                    <p class="text-[11px] text-gray-500">เลือกใช้ผ้าคุณภาพสูง บางเบา ระบายอากาศได้ดีเยี่ยม</p>
+                </div>
+            </div>
+        </section>
+
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-white border-t border-gray-900 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 text-xs font-light">
+                <div>
+                    <h3 class="text-lg font-bold tracking-widest uppercase mb-3 font-serif-title">FAIRYMOOD</h3>
+                    <p class="text-gray-400 text-[11px] leading-relaxed">
+                        แบรนด์เสื้อผ้าสไตล์แฟรี่สายเดี่ยว มิกซ์แอนด์แมทช์ง่าย แต่งตัวสนุก มินิมอลเท่ สบายตา ส่งฟรีทั่วไทย
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold uppercase tracking-wider text-[11px] text-gray-200 mb-3">เมนูบริการ</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" onclick="switchTab('shop')" class="hover:text-white">เลือกซื้อสินค้า</a></li>
+                        <li><a href="#" onclick="switchTab('match')" class="hover:text-white">ห้องลองชุด Mix & Match</a></li>
+                        <li><a href="#" onclick="switchTab('track')" class="hover:text-white">เช็คสถานะการจัดส่ง</a></li>
+                        <li><a href="#" onclick="openSizeGuideModal()" class="hover:text-white">ตารางขนาดไซส์เสื้อผ้า</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold uppercase tracking-wider text-[11px] text-gray-200 mb-3">ติดตามข่าวสาร</h4>
+                    <div class="flex space-x-4 text-gray-400 text-lg mb-3">
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="hover:text-white"><i class="fa-brands fa-line"></i></a>
+                    </div>
+                    <p class="text-[10px] text-gray-500">LINE Official: @fairymood</p>
+                </div>
+                <div>
+                    <h4 class="font-bold uppercase tracking-wider text-[11px] text-gray-200 mb-3">การรับประกัน & จัดส่ง</h4>
+                    <p class="text-[11px] text-gray-400 leading-relaxed mb-2">
+                        🚚 ส่งฟรีทุกออเดอร์ ไม่มีขั้นต่ำ จัดส่งพัสดุด่วนภายใน 1-3 วันทำการ
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-900 pt-6 flex flex-col sm:flex-row gap-3 items-center justify-between text-[10px] text-gray-500">
+                <span>&copy; 2026 FAIRYMOOD Store. All Rights Reserved.</span>
+                <div class="flex gap-4"><a href="privacy.html" class="hover:text-white">นโยบายความเป็นส่วนตัว</a><a href="terms.html" class="hover:text-white">เงื่อนไขการสั่งซื้อ</a></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- CART DRAWER MODAL -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex justify-end transition-all">
+        <div class="bg-white w-full max-w-md h-full flex flex-col justify-between p-6 shadow-2xl overflow-y-auto">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                    <h3 class="text-sm font-bold uppercase tracking-wider flex items-center">
+                        <i class="fa-solid fa-bag-shopping mr-2"></i> ตะกร้าสินค้าของคุณ
+                    </h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-black">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Free Shipping Progress -->
+                <div class="bg-black text-white p-3 rounded-2xl my-4 text-xs text-center font-light flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-truck-fast text-green-400"></i>
+                    <span>ออเดอร์ของคุณได้รับสิทธิ์ <strong class="underline font-semibold">จัดส่งฟรีไม่มีขั้นต่ำ</strong></span>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items" class="space-y-4 max-h-[50vh] overflow-y-auto pr-1">
+                    <!-- JS renders cart items -->
+                </div>
+            </div>
+
+            <!-- Cart Summary & Coupon & Checkout -->
+            <div class="border-t border-gray-100 pt-4 space-y-3">
+                <!-- Coupon Code Input -->
+                <div class="flex space-x-2">
+                    <input type="text" id="coupon-input" placeholder="โค้ดส่วนลด (เช่น FAIRY10)" class="uppercase text-xs border border-gray-300 rounded-lg px-3 py-2 flex-1 focus:outline-none focus:border-black">
+                    <button onclick="applyCoupon()" class="bg-gray-100 hover:bg-black hover:text-white text-xs font-semibold px-4 py-2 rounded-lg transition">ใช้โค้ด</button>
+                </div>
+                <div id="coupon-message" class="text-[10px] hidden"></div>
+
+                <div class="space-y-1 text-xs pt-2">
+                    <div class="flex justify-between text-gray-500">
+                        <span>ราคารวมสินค้า</span>
+                        <span id="cart-subtotal-price">฿0</span>
+                    </div>
+                    <div id="cart-discount-row" class="flex justify-between text-green-600 hidden">
+                        <span>ส่วนลดคูปอง</span>
+                        <span id="cart-discount-price">-฿0</span>
+                    </div>
+                    <div class="flex justify-between text-gray-500">
+                        <span>ค่าจัดส่ง</span>
+                        <span class="font-medium text-green-600">ฟรี (Free)</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-bold text-black pt-2 border-t border-gray-100">
+                        <span>สุทธิ (ยอดชำระ)</span>
+                        <span id="cart-total-price">฿0</span>
+                    </div>
+                </div>
+
+                <button onclick="openCheckoutModal()" class="w-full bg-black text-white py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-gray-800 transition shadow-lg">
+                    ดำเนินการสั่งซื้อ / ชำระเงิน <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-gray-400 hover:text-black">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+
+            <h3 class="text-xl font-bold uppercase tracking-wider mb-2 font-serif-title">ชำระเงินและระบุที่อยู่จัดส่ง</h3>
+            <p class="text-xs text-gray-500 mb-6">กรุณากรอกข้อมูลสำหรับจัดส่งสินค้าฟรีถึงบ้านคุณ</p>
+
+            <form id="checkout-form" onsubmit="handleFormCheckout(event)" class="space-y-6">
+                <!-- Shipping Details -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-3 text-black border-b border-gray-100 pb-2">1. ข้อมูลการจัดส่ง</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">ชื่อ-นามสกุลผู้รับ *</label>
+                            <input type="text" id="cust-name" required placeholder="เช่น สมหญิง แฟรี่" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">เบอร์โทรศัพท์ *</label>
+                            <input type="tel" id="cust-phone" required placeholder="0812345678" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">อีเมลสำหรับใบเสร็จ / ติดต่อ (ไม่บังคับ)</label>
+                            <input type="email" id="cust-email" autocomplete="email" placeholder="you@example.com" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">ที่อยู่จัดส่ง (บ้านเลขที่, ถนน, หมู่บ้าน) *</label>
+                            <input type="text" id="cust-address" required placeholder="เช่น 123/45 ถนนพหลโยธิน" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">แขวง / ตำบล *</label>
+                            <input type="text" id="cust-subdistrict" required placeholder="เช่น คลองหนึ่ง" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">เขต / อำเภอ *</label>
+                            <input type="text" id="cust-district" required placeholder="เช่น คลองหลวง" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">จังหวัด *</label>
+                            <input type="text" id="cust-province" required placeholder="เช่น ปทุมธานี" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-semibold uppercase text-gray-500 mb-1">รหัสไปรษณีย์ *</label>
+                            <input type="text" id="cust-zipcode" required placeholder="เช่น 12120" class="w-full border border-gray-300 rounded-xl px-3.5 py-2.5 text-xs focus:outline-none focus:border-black">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-3 text-black border-b border-gray-100 pb-2">2. วิธีการชำระเงิน</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <label class="border border-gray-200 rounded-2xl p-3 flex items-center space-x-2 cursor-pointer hover:border-black">
+                            <input type="radio" name="payment-method" value="promptpay" checked onchange="togglePaymentUI()" class="accent-black">
+                            <div>
+                                <span class="text-xs font-bold block">PromptPay</span>
+                                <span class="text-[9px] text-gray-400">QR จริงผ่าน Stripe Checkout</span>
+                            </div>
+                        </label>
+                        <label class="border border-gray-200 rounded-2xl p-3 flex items-center space-x-2 cursor-pointer hover:border-black">
+                            <input type="radio" name="payment-method" value="card" onchange="togglePaymentUI()" class="accent-black">
+                            <div>
+                                <span class="text-xs font-bold block">บัตรเครดิต/เดบิต</span>
+                                <span class="text-[9px] text-gray-400">Visa / Mastercard</span>
+                            </div>
+                        </label>
+                        <label class="border border-gray-200 rounded-2xl p-3 flex items-center space-x-2 cursor-pointer hover:border-black">
+                            <input type="radio" name="payment-method" value="cod" onchange="togglePaymentUI()" class="accent-black">
+                            <div>
+                                <span class="text-xs font-bold block">เก็บเงินปลายทาง</span>
+                                <span class="text-[9px] text-gray-400">COD ชำระเมื่อรับของ</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Payment UI Dynamic Box -->
+                    <div id="payment-promptpay-box" class="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-2xl text-center space-y-2">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                        <p class="text-xs font-semibold text-gray-700">ชำระเงินผ่าน Stripe Checkout</p>
+                        <p class="text-[10px] text-gray-500">ข้อมูลการชำระเงินจะถูกกรอกบนหน้าชำระเงินของ Stripe โดยเว็บไซต์ FAIRYMOOD จะไม่เก็บเลขบัตรของคุณ</p>
+                        <p class="text-[10px] text-gray-500">ยอดชำระ: <strong id="checkout-pay-amount" class="text-sm font-bold text-black">฿0</strong></p>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <div id="turnstile-container" class="min-h-[65px] flex justify-center"></div>
+                    <p id="turnstile-help" class="text-center text-[10px] text-gray-400 mt-1">ระบบป้องกันคำสั่งซื้ออัตโนมัติ</p>
+                </div>
+
+                <label class="flex items-start gap-2 text-[10px] text-gray-500 leading-relaxed">
+                    <input type="checkbox" required class="mt-0.5 accent-black">
+                    <span>ฉันยอมรับ <a href="terms.html" target="_blank" class="underline text-black">เงื่อนไขการสั่งซื้อ</a> และรับทราบ <a href="privacy.html" target="_blank" class="underline text-black">นโยบายความเป็นส่วนตัว</a></span>
+                </label>
+
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-gray-400 block">ยอดรวมที่ต้องชำระ</span>
+                        <span id="checkout-grand-total" class="text-xl font-bold text-black">฿0</span>
+                    </div>
+                    <button type="submit" class="bg-black text-white px-8 py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-gray-800 transition shadow-xl">
+                        ยืนยันการสั่งซื้อ ✨
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ORDER SUCCESS RECEIPT MODAL -->
+    <div id="receipt-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center space-y-4 shadow-2xl animate-fade-in">
+            <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl mx-auto shadow-lg">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold uppercase font-serif-title">คำสั่งซื้อเสร็จสมบูรณ์!</h3>
+            <p class="text-xs text-gray-500 leading-relaxed">
+                ขอบคุณสำหรับการสั่งซื้อกับ FAIRYMOOD สินค้าของคุณกำลังถูกจัดเตรียมอย่างใส่ใจ
+            </p>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 text-left space-y-2 text-xs">
+                <div class="flex justify-between border-b border-gray-200 pb-2">
+                    <span class="text-gray-500">หมายเลขออเดอร์ (Order ID):</span>
+                    <strong id="receipt-order-id" class="text-black font-mono">ORD-0000</strong>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">ผู้รับ:</span>
+                    <span id="receipt-cust-name" class="font-medium">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">การจัดส่ง:</span>
+                    <span class="text-green-600 font-medium">ส่งฟรี (Express)</span>
+                </div>
+                <div class="flex justify-between border-t border-gray-200 pt-2 font-bold text-sm">
+                    <span>ยอดชำระทั้งสิ้น:</span>
+                    <span id="receipt-total-amount">฿0</span>
+                </div>
+            </div>
+
+            <div class="pt-2 space-y-2">
+                <button onclick="copyOrderId()" class="w-full bg-gray-100 hover:bg-gray-200 text-black py-2.5 rounded-full text-xs font-semibold transition">
+                    <i class="fa-regular fa-copy mr-1"></i> คัดลอก Order ID
+                </button>
+                <button onclick="closeReceiptModal()" class="w-full bg-black text-white py-3 rounded-full text-xs font-semibold hover:bg-gray-800 transition">
+                    กลับสู่หน้าร้านค้า
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT DETAIL MODAL -->
+    <div id="product-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeProductModal()" class="absolute top-5 right-5 text-gray-400 hover:text-black z-10">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="product-modal-content">
+                <!-- JS will render detail view -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SIZE GUIDE MODAL -->
+    <div id="size-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeSizeGuideModal()" class="absolute top-5 right-5 text-gray-400 hover:text-black">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-lg font-bold uppercase tracking-wider mb-2 font-serif-title">ตารางขนาดไซส์ (Size Guide)</h3>
+            <p class="text-xs text-gray-500 mb-4">ตารางเปรียบเทียบขนาดสำหรับเสื้อสายเดี่ยวและกระโปรงสไตล์แฟรี่</p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-black text-white uppercase text-[10px] tracking-wider">
+                            <th class="p-2.5 rounded-l-lg">ไซส์ (Size)</th>
+                            <th class="p-2.5">รอบอก (นิ้ว)</th>
+                            <th class="p-2.5">รอบเอว (นิ้ว)</th>
+                            <th class="p-2.5 rounded-r-lg">สะโพก (นิ้ว)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 font-light">
+                        <tr><td class="p-2.5 font-bold">S</td><td class="p-2.5">30 - 32"</td><td class="p-2.5">23 - 25"</td><td class="p-2.5">33 - 35"</td></tr>
+                        <tr><td class="p-2.5 font-bold">M</td><td class="p-2.5">33 - 35"</td><td class="p-2.5">26 - 28"</td><td class="p-2.5">36 - 38"</td></tr>
+                        <tr><td class="p-2.5 font-bold">L</td><td class="p-2.5">36 - 38"</td><td class="p-2.5">29 - 31"</td><td class="p-2.5">39 - 41"</td></tr>
+                        <tr><td class="p-2.5 font-bold">Freesize</td><td class="p-2.5">30 - 38" (ยืดได้)</td><td class="p-2.5">24 - 30" (ยางยืด)</td><td class="p-2.5">34 - 42"</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div id="search-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-start justify-center pt-20 p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 relative shadow-2xl">
+            <button onclick="toggleSearchModal()" class="absolute top-5 right-5 text-gray-400 hover:text-black">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 class="text-xs font-bold uppercase tracking-wider mb-4">ค้นหาสินค้าแฟรี่</h3>
+            <div class="relative">
+                <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="ค้นหา เช่น สายเดี่ยว, ลูกไม้, กระโปรง, สร้อย..." class="w-full border border-gray-300 rounded-full py-3 pl-4 pr-10 text-xs focus:outline-none focus:border-black">
+                <i class="fa-solid fa-magnifying-glass absolute right-4 top-3.5 text-gray-400"></i>
+            </div>
+            <div id="search-results" class="mt-4 max-h-60 overflow-y-auto space-y-2"></div>
+        </div>
+    </div>
+
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-black text-white text-xs px-5 py-3 rounded-full shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center space-x-2">
+        <i class="fa-solid fa-check text-green-400"></i>
+        <span id="toast-message">แจ้งเตือน</span>
+    </div>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
+    <script src="data-store.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - FAIRYMOOD</title>
+    <link rel="stylesheet" href="tailwind.generated.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-neutral-950 text-gray-900 selection:bg-black selection:text-white">
+    <main class="min-h-screen grid lg:grid-cols-2">
+        <section class="hidden lg:flex relative overflow-hidden bg-black text-white p-12 flex-col justify-between">
+            <div class="absolute inset-0 opacity-45 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1400&q=85');"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-black/20"></div>
+
+            <a href="index.html" class="relative z-10 inline-flex items-center gap-3 w-fit group">
+                <div class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                    <h1 class="font-serif-title text-2xl tracking-[0.15em]">FAIRYMOOD</h1>
+                    <p class="text-[9px] tracking-[0.25em] text-gray-300 uppercase">Admin Management</p>
+                </div>
+            </a>
+
+            <div class="relative z-10 max-w-lg">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/20 bg-white/10 text-[10px] uppercase tracking-[0.2em] mb-5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span> Secure Admin Area
+                </span>
+                <h2 class="font-serif-title text-5xl leading-tight mb-4">Manage your<br>Fairy world.</h2>
+                <p class="text-sm text-gray-300 leading-relaxed font-light max-w-md">จัดการสินค้าแบบเพิ่ม/แก้ไข/ลบ ตรวจสอบคำสั่งซื้อ อัปเดต Tracking และดูข้อมูลลูกค้าที่เชื่อมกับหน้าร้าน FAIRYMOOD</p>
+            </div>
+
+            <p class="relative z-10 text-[10px] text-gray-500 tracking-wider">© 2026 FAIRYMOOD STORE · ADMIN PORTAL</p>
+        </section>
+
+        <section class="bg-white min-h-screen flex items-center justify-center p-5 sm:p-10 relative">
+            <a href="index.html" class="absolute top-6 left-6 text-xs text-gray-500 hover:text-black transition inline-flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> กลับหน้าร้าน
+            </a>
+
+            <div class="w-full max-w-md animate-fade-in">
+                <div class="lg:hidden text-center mb-9">
+                    <h1 class="font-serif-title text-3xl tracking-[0.15em]">FAIRYMOOD</h1>
+                    <p class="text-[9px] tracking-[0.25em] text-gray-400 uppercase mt-1">Admin Management</p>
+                </div>
+
+                <div class="mb-8">
+                    <div class="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center mb-5 shadow-lg shadow-black/10">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">Administrator Access</span>
+                    <h2 class="font-serif-title text-3xl mt-2">เข้าสู่ระบบหลังบ้าน</h2>
+                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">กรอกบัญชีผู้ดูแลระบบเพื่อเข้าสู่ Admin Dashboard</p>
+                </div>
+
+                <form id="login-form" class="space-y-5" novalidate>
+                    <div>
+                        <label for="username" class="block text-[10px] font-semibold uppercase tracking-wider text-gray-500 mb-2">Username / Email</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                            <input id="username" type="text" autocomplete="username" placeholder="admin@yourdomain.com" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-11 pr-4 py-3.5 text-sm outline-none focus:bg-white focus:border-black transition" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label for="password" class="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Password</label>
+                            <span class="text-[10px] text-gray-400">Admin only</span>
+                        </div>
+                        <div class="relative">
+                            <i class="fa-solid fa-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-11 pr-12 py-3.5 text-sm outline-none focus:bg-white focus:border-black transition" required>
+                            <button type="button" id="toggle-password" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition" aria-label="แสดงหรือซ่อนรหัสผ่าน">
+                                <i class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="login-error" class="hidden rounded-2xl bg-red-50 border border-red-100 px-4 py-3 text-xs text-red-600">
+                        <i class="fa-solid fa-circle-exclamation mr-1.5"></i>
+                        <span id="login-error-text">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</span>
+                    </div>
+
+                    <button type="submit" class="w-full bg-black text-white rounded-full py-3.5 text-xs font-semibold uppercase tracking-[0.15em] hover:bg-gray-800 transition shadow-xl shadow-black/10">
+                        เข้าสู่ระบบ <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </form>
+                <div class="mt-7 p-4 rounded-2xl bg-gray-50 border border-gray-100 text-xs text-gray-600 leading-relaxed">
+                    <p class="font-semibold text-black mb-1"><i class="fa-solid fa-shield-halved mr-1"></i> ระบบเข้าสู่ระบบจริง</p>
+                    <p>บัญชีผู้ดูแลถูกตรวจสอบด้วย Supabase Auth และต้องได้รับสิทธิ์ Admin ในฐานข้อมูลก่อนจึงจะเข้าหน้าหลังบ้านได้</p>
+                </div>
+
+                <p class="text-center text-[10px] text-gray-400 mt-6 leading-relaxed">ไม่มีรหัสผ่าน Demo อยู่ในไฟล์ JavaScript และ Session จะถูกจัดการโดยระบบ Authentication</p>
+            </div>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.111.0"></script>
+    <script src="data-store.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>
